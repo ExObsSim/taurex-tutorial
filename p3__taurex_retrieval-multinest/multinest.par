@@ -1,0 +1,82 @@
+[Global]
+xsec_path = /ariel/data/SOFTWARE_DATA/xsec
+cia_path = /ariel/data/SOFTWARE_DATA/cia
+gpu_allocate_single = True
+
+[Chemistry]
+chemistry_type = taurex
+fill_gases = H2,He
+ratio = 0.172
+
+    [[H2O]]
+    gas_type = constant
+    mix_ratio = 1.2e-4
+
+    [[N2]]
+    gas_type = constant
+    mix_ratio = 3.00739e-9
+
+
+[Temperature]
+profile_type = isothermal
+T = 1500.0
+
+[Pressure]
+profile_type = Simple
+atm_min_pressure = 1e-0
+atm_max_pressure = 1e6
+nlayers = 30
+
+
+[Planet]
+planet_type = simple
+planet_radius = 1.0
+planet_mass = 1.0
+
+[Star]
+star_type = blackbody
+radius = 1.0
+temperature = 5700
+
+
+[Model]
+model_type = transmission_cuda
+
+    [[AbsorptionCUDA]]
+
+    [[CIACUDA]]
+    cia_pairs = H2-He, H2-H2
+
+    [[RayleighCUDA]]
+
+    #[[SimpleCloudsCUDA]]
+
+
+[Observation]
+observed_spectrum = observation.dat
+
+
+[Optimizer]
+optimizer = multinest
+num_live_points = 50
+# Will create directory if it doesnt exist
+multi_nest_path = ./multinest
+search_multi_modes = True
+resume = False
+importance_sampling = False
+
+#[Optimizer]
+#optimizer = nestle
+#num_live_points=50
+#method = single
+
+
+[Fitting]
+planet_radius:fit = True
+planet_radius:factor = 0.8, 2.1
+
+#H2O:fit = True
+#H2O:bounds = 1e-12, 1e-1
+
+T:fit = True
+T:bounds = 1000, 2000
